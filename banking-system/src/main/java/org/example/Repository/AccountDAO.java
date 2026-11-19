@@ -1,4 +1,107 @@
 package org.example.Repository;
 
+import org.example.database.DBConnectionFactory;
+import org.example.model.Account;
+import org.example.model.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class AccountDAO {
+
+
+
+    public Account getAcccountByAccountId(int accountId) {
+
+        String sql = "SELECT * FROM accounts WHERE account_id = ?";
+
+        try (Connection conn = DBConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, accountId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Account account = new Account();
+
+                    account.setAccountId(rs.getInt("account_id"));
+                    account.setUserId((rs.getInt("user_id")));
+                    account.setAccountNumber(rs.getInt("account_number"));
+                    account.setBalance(rs.getDouble("balance"));
+                    account.setStatus(rs.getString("status"));
+
+                    return account;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user by username: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public Account getAcccountByAccountNumber(int accountNumber) {
+
+        String sql = "SELECT * FROM accounts WHERE accountNumber = ?";
+
+        try (Connection conn = DBConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, accountNumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Account account = new Account();
+
+                    account.setAccountId(rs.getInt("accountId"));
+                    account.setUserId((rs.getInt("userId")));
+                    account.setAccountNumber(rs.getInt("accountNumber"));
+                    account.setBalance(rs.getDouble("balance"));
+                    account.setStatus(rs.getString("status"));
+
+                    return account;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user by username: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public Account updateAccountStatus(Account account) {
+
+        String sql = "UPDATE accounts SET status = ? WHERE account_id = ?";
+
+        try (Connection conn = DBConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, account.getStatus());
+            stmt.setInt(2, account.getAccountId());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                return account;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating account status: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

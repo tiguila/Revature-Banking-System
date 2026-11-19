@@ -2,29 +2,22 @@ package org.example.controller;
 
 
 import org.example.model.User;
+import org.example.service.UserService;
 
 import java.util.List;
 
 public class EmployeeController {
 
+    private UserService userService;
 
-    /*
-    *
-    *
-    * Employees of the bank should be able to view all of their customers' information. This includes:
-
-Account information
-Account balances
-Personal information
-
-* */
-
+    public EmployeeController() {
+        this.userService = new UserService();
+    }
 
     public List<User> getAllUsers() {
-
-
-
-        return  null;
+        return userService.getAllUsers();
     }
+
+
 
 }

@@ -6,10 +6,14 @@ public class Transaction {
     private int transactionId;
     private int accountId;
 
-    //    deposit, withdraw
+    //    deposit, withdraw, transfer
     private String transactionType;
 
     private double amount;
+
+
+
+
 
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;

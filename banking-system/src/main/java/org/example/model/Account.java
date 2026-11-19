@@ -5,16 +5,22 @@ public class Account {
     private int accountId;
 
     private int userId; // account holder ID
-    private String accountNumber;
+    private int accountNumber;
 
-    private int balance;
+    private double balance;
 
     //    approved, denied, pending
     private String status;
 
+    public Account(int userId, int balance, String status) {
+        this.userId = userId;
+        this.balance = balance;
+        this.status = status;
+    }
+
     public Account(){}
 
-    public Account(int userId, int accountId, String accountNumber, int balance, String status) {
+    public Account(int userId, int accountId, int accountNumber, int balance, String status) {
         this.userId = userId;
         this.accountId = accountId;
         this.accountNumber = accountNumber;
@@ -34,11 +40,11 @@ public class Account {
         this.status = status;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -50,11 +56,11 @@ public class Account {
         return accountId;
     }
 
-    public String getAccountNumber() {
+    public int getAccountNumber() {
         return accountNumber;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 

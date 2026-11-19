@@ -1,6 +1,7 @@
 package org.example.controller;
 
 
+import org.example.Repository.UserDAO;
 import org.example.model.User;
 
 import java.util.Scanner;
@@ -8,9 +9,11 @@ import java.util.Scanner;
 public class LoginController {
 
     private Scanner scanner;
+    private UserDAO userDAO;
 
     public LoginController(){
         this.scanner = new Scanner(System.in);
+        this.userDAO = new UserDAO();
     }
 
 
@@ -26,22 +29,12 @@ public class LoginController {
 
         System.out.println();
 
+        User result = userDAO.login(username, password);
 
-//
-//        userId
-//                userType
-//        username
-//                password
-
-//        private int ;
-//        private String ;
-//        private String ;
-//        private String ;
-
-
-
-
-        return  null;
+        if(result == null) {
+            return null;
+        }
+        return  result;
     }
 
 
