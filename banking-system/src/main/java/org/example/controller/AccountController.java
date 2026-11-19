@@ -7,18 +7,22 @@ import org.example.service.AccountService;
 public class AccountController {
     private AccountService accountService;
 
-    public Account updateAccountStatus(){
-        return accountService.updateAccountStatus();
-    }
-
-
     public AccountController(){
         this.accountService = new AccountService();
+    }
+
+    public Account createAccount() {
+        return accountService.createAccount();
+    }
+    public Account updateAccountStatus(){
+        return accountService.updateAccountStatus();
     }
 
     public Account getAccountById(){
         return accountService.getAcccountByAccountId();
     }
 
-
+    public Account getAccountByUserId(int userId){
+        return accountService.getAccountByUserId(userId);
+    }
 }

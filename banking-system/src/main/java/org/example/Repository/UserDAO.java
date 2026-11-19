@@ -17,7 +17,7 @@ public class UserDAO {
     public void createUser(User user) {
 
         String sql = """
-            INSERT INTO users (userType, username, password)
+            INSERT INTO users (user_type, username, password)
             VALUES (?, ?, ?)
             RETURNING user_id
             """;
@@ -68,7 +68,7 @@ public class UserDAO {
                     User user = new User();
 
                     user.setUserId(rs.getInt("user_id"));
-                    user.setUserType(rs.getString("userType"));
+                    user.setUserType(rs.getString("user_type"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
 
@@ -104,7 +104,7 @@ public class UserDAO {
                     User user = new User();
 
                     user.setUserId(rs.getInt("user_id"));
-                    user.setUserType(rs.getString("userType"));
+                    user.setUserType(rs.getString("user_type"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
 
@@ -138,7 +138,7 @@ public class UserDAO {
                     User user = new User();
 
                     user.setUserId(rs.getInt("user_id"));
-                    user.setUserType(rs.getString("userType"));
+                    user.setUserType(rs.getString("user_type"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
 
@@ -161,7 +161,7 @@ public class UserDAO {
 
         List<User> users = new ArrayList<>();
 
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users where userType = 'customer'";
 
         try (Connection conn = DBConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -172,7 +172,7 @@ public class UserDAO {
                 User user = new User();
 
                 user.setUserId(rs.getInt("user_id"));
-                user.setUserType(rs.getString("userType"));
+                user.setUserType(rs.getString("user_type"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
 

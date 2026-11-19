@@ -11,14 +11,13 @@ public class UserController {
     private UserService userService;
 
     public UserController() {
-
-//        this.userDAO = new UserDAO();
         this.userService = new UserService();
     }
 
-    public void createUser() {
-        userService.createUser();
+    public User createUser() {
+        return userService.createUser();
     }
+
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }

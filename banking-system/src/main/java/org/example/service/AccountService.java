@@ -9,10 +9,25 @@ public class AccountService {
     AccountDAO accountDAO;
     Scanner scanner;
 
+    public AccountService(AccountDAO accountDAO, Scanner scanner) {
+        this.accountDAO = accountDAO;
+        this.scanner = scanner;
+    }
+
     public AccountService(){
         this.accountDAO = new AccountDAO();
         this.scanner = new Scanner(System.in);
     }
+
+    public Account createAccount() {
+        System.out.println("===== Create Account ======");
+
+        System.out.println("Please enter user ID:");
+        int userId = scanner.nextInt();
+
+        return accountDAO.createAccount(userId);
+    }
+
 
     //completed successfully
     public Account updateAccountStatus() {
@@ -53,6 +68,9 @@ public class AccountService {
         return account;
     }
 
+    public Account getAccountByUserId(int userId) {
+        return accountDAO.getAccountbyUserId(userId);
+    }
 
 
 

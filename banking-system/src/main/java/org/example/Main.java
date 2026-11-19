@@ -3,6 +3,7 @@ package org.example;
 import org.example.Repository.AccountDAO;
 import org.example.Repository.TransactionDAO;
 import org.example.Repository.UserDAO;
+import org.example.UI.BankingApp;
 import org.example.controller.AccountController;
 import org.example.controller.TransactionController;
 import org.example.controller.UserController;
@@ -12,6 +13,7 @@ import org.example.model.User;
 import org.example.service.UserService;
 import org.w3c.dom.UserDataHandler;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +27,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-
+        BankingApp bankingApp = new BankingApp();
+        bankingApp.startBankingApp();
 
 
 

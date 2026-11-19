@@ -64,7 +64,7 @@ public class UserService {
 
 
 
-    public void createUser() {
+    public User createUser() {
 
         System.out.println("===== Create User ======");
 
@@ -95,6 +95,7 @@ public class UserService {
 
         // Save user to database
         userDAO.createUser(user);
+        return userDAO.login(username, password);
     }
 
 

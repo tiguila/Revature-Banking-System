@@ -24,6 +24,9 @@ public class TransactionController {
     public Account getAccountByUserId() {
         return transactionService.getAccountbyUserId();
     }
+    public Account getAccountByUserId(int currentUserId) {
+        return transactionService.getAccountbyUserId();
+    }
 
 
 

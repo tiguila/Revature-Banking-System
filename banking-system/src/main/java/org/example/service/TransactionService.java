@@ -25,6 +25,17 @@ public class TransactionService {
         this.transactionDAO = new TransactionDAO();
     }
 
+    public TransactionService(
+            Scanner scanner,
+            UserDAO userDAO,
+            AccountDAO accountDAO,
+            TransactionDAO transactionDAO) {
+
+        this.scanner = scanner;
+        this.userDAO = userDAO;
+        this.accountDAO = accountDAO;
+        this.transactionDAO = transactionDAO;
+    }
 
 
 
@@ -94,6 +105,9 @@ public class TransactionService {
     }
 
 
+    public Account getAccountbyUserId(int userId) {
+        return transactionDAO.getAccountByUserId(userId);
+    }
 
 
 
