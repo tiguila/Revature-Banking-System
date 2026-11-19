@@ -20,6 +20,7 @@ public class TransactionDAO {
         this.accountDAO = new AccountDAO();
     }
 
+    //completed successfully
     public boolean depositFunds(Account account, double amount) {
 
         String updateSQL = "UPDATE accounts SET balance = balance + ? WHERE account_id = ?";
@@ -65,8 +66,7 @@ public class TransactionDAO {
 
 
 
-
-
+    //completed successfully
     public void insertTransaction(Transaction transaction) {
 
         String sql = "INSERT INTO transactions (account_id, transaction_type, amount) VALUES (?, ?, ?)";
@@ -94,30 +94,55 @@ public class TransactionDAO {
 
 
 
-
-
+    //completed successfully
     public boolean withdrawFunds(Account account, double amount) {
 
-        String sql = "UPDATE accounts SET balance = balance - ? " +
-                "WHERE account_id = ? AND balance >= ?";
+        String updateSQL = "UPDATE accounts SET balance = balance - ? WHERE account_id = ? AND balance >= ?";
+        String insertSQL = "INSERT INTO transactions (account_id, transaction_type, amount) VALUES (?, 'withdraw', ?)";
 
-        try (Connection conn = DBConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnectionFactory.getConnection()) {
 
-            stmt.setDouble(1, amount);
-            stmt.setInt(2, account.getAccountId());
-            stmt.setDouble(3, amount);
+            conn.setAutoCommit(false);
 
-            int rowsUpdated = stmt.executeUpdate();
+            try {
 
-            return rowsUpdated > 0;
+                // Update account balance
+                try (PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
+
+                    stmt.setDouble(1, amount);
+                    stmt.setInt(2, account.getAccountId());
+                    stmt.setDouble(3, amount);
+
+                    if (stmt.executeUpdate() == 0) {
+                        conn.rollback();
+                        return false;
+                    }
+                }
+
+                // Insert transaction record
+                try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
+
+                    stmt.setInt(1, account.getAccountId());
+                    stmt.setDouble(2, amount);
+
+                    stmt.executeUpdate();
+                }
+
+                conn.commit();
+                return true;
+
+            } catch (SQLException e) {
+
+                conn.rollback();
+                throw e;
+            }
 
         } catch (SQLException e) {
-            System.out.println("Error withdrawing funds: " + e.getMessage());
-            e.printStackTrace();
-        }
 
-        return false;
+            System.out.println("Withdrawal error: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
@@ -125,7 +150,7 @@ public class TransactionDAO {
 
 
 
-
+    //completed successfully
     public Account getAccountByUserId(int userId) {
 
         String sql = "SELECT * FROM accounts WHERE user_id = ?";

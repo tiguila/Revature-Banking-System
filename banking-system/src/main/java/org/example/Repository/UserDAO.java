@@ -9,8 +9,44 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class UserDAO {
+
+
+    public void createUser(User user) {
+
+        String sql = """
+            INSERT INTO users (userType, username, password)
+            VALUES (?, ?, ?)
+            RETURNING user_id
+            """;
+
+        try (Connection conn = DBConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getUserType());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                    int generatedUserId = rs.getInt("user_id");
+                    user.setUserId(generatedUserId);
+                    System.out.println("User created successfully!");
+                }
+                else {
+                    System.out.println("Unable to create user");
+                }
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("Error creating user: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
 
 

@@ -29,58 +29,6 @@ public class TransactionService {
 
 
 
-    public Account withdraw(User currentUser) {
-
-        System.out.println("===== Withdraw ======");
-        System.out.println("Please enter amount to withdraw:");
-
-        double amountToWithdraw = scanner.nextDouble();
-
-        Account account = transactionDAO.getAccountByUserId(currentUser.getUserId());
-
-        if (account == null) {
-            System.out.println("Account not found.");
-            return null;
-        }
-
-        if (amountToWithdraw <= 0) {
-            System.out.println("Invalid withdrawal amount.");
-            return account;
-        }
-
-        if (account.getBalance() < amountToWithdraw) {
-            System.out.println("Insufficient funds.");
-            return account;
-        }
-
-        // Update database balance
-        boolean success = transactionDAO.withdrawFunds(account, amountToWithdraw);
-
-        if (success) {
-
-            // Update local account object
-            account.setBalance(account.getBalance() - amountToWithdraw);
-
-            System.out.println("Withdrawal successful!");
-            System.out.println("New balance: " + account.getBalance());
-
-        } else {
-            System.out.println("Withdrawal failed.");
-        }
-        return account;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -131,73 +79,62 @@ public class TransactionService {
     }
 
 
-    public Account updateStatus() {
-        System.out.println("Please enter account number:");
-        int accountNumber = scanner.nextInt();
-        System.out.println();
 
 
-        Account account = accountDAO.getAcccountByAccountNumber(accountNumber);
 
-        System.out.println("Update status:");
-        System.out.println("1 --> Approved");
-        System.out.println("0 --> Denied");
+    //completed successfully
+    public Account getAccountbyUserId() {
 
-        int status = scanner.nextInt();
-        System.out.println();
+        System.out.println("===== Get Account given User ID ======");
+        System.out.println("Please enter user ID:");
 
-        if(status == 0) {
-            account.setStatus("Denied");
+        int userId = scanner.nextInt();
+        return transactionDAO.getAccountByUserId(userId);
+
+    }
+
+
+
+
+
+
+
+    //completed successfully
+    public Account withdraw(User currentUser) {
+
+        System.out.println("===== Withdrawal ======");
+        System.out.println("Please enter amount to withdraw:");
+
+        double amountToWithdraw = scanner.nextDouble();
+
+        // Retrieve user's account
+        Account account = transactionDAO.getAccountByUserId(currentUser.getUserId());
+
+        if (account == null) {
+            System.out.println("Account not found.");
+            return null;
         }
-        else {
-            account.setStatus("Approved");
+
+        // Validate withdrawal amount
+        if (amountToWithdraw <= 0) {
+            System.out.println("Unable to process invalid withdrawal amount.");
+            return account;
         }
 
-        accountDAO.updateAccountStatus(account);
+        // Process withdrawal
+        boolean success = transactionDAO.withdrawFunds(account, amountToWithdraw);
+
+        if (success) {
+            System.out.println("Withdrawal successful!");
+        } else {
+            System.out.println("Withdrawal failed. Insufficient funds or account not found.");
+        }
 
         return account;
     }
 
 
-
-
-
-
-
-
-
-    public User createUser() {
-        System.out.println("===== CREATING User======");
-        System.out.println("Please enter username:");
-        String username = scanner.next();
-
-        System.out.println();
-
-        System.out.println("password:");
-        String password = scanner.next();
-
-        System.out.println("\nEnter type\n1 --> Employee\n2 --> Customer");
-        String userType = null;
-
-        int userTypeInput = scanner.nextInt();
-        System.out.println();
-        if (userTypeInput == 1) {
-            userType = "Employee";
-        }
-        else {
-            userType = "Customer";
-        }
-
-        Random random = new Random();
-        int userId = random.nextInt(100);
-
-        return new User(userId, userType, username, password);
-    }
-
-
-
-
-//completed inside Controller as well
+    //completed successfully
     public Account deposit(User currentUser) {
 
         System.out.println("===== Deposit ======");

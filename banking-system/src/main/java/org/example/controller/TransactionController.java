@@ -17,7 +17,13 @@ public class TransactionController {
         return  transactionService.deposit(currentUser);
     }
 
+    public Account withdraw(User currentUser) {
+        return transactionService.withdraw(currentUser);
+    }
 
+    public Account getAccountByUserId() {
+        return transactionService.getAccountbyUserId();
+    }
 
 
 

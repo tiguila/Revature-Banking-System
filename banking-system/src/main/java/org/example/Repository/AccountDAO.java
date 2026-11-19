@@ -13,6 +13,33 @@ public class AccountDAO {
 
 
 
+    //completed successfully
+    public Account updateAccountStatus(int accountId, String newStatus) {
+
+        String sql = "UPDATE accounts SET status = ? WHERE account_id = ?";
+
+        try (Connection conn = DBConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newStatus);
+            stmt.setInt(2, accountId);
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                return getAcccountByAccountId(accountId);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating account status: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    //completed successfully
     public Account getAcccountByAccountId(int accountId) {
 
         String sql = "SELECT * FROM accounts WHERE account_id = ?";
@@ -47,61 +74,5 @@ public class AccountDAO {
     }
 
 
-    public Account getAcccountByAccountNumber(int accountNumber) {
 
-        String sql = "SELECT * FROM accounts WHERE accountNumber = ?";
-
-        try (Connection conn = DBConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, accountNumber);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-
-                if (rs.next()) {
-
-                    Account account = new Account();
-
-                    account.setAccountId(rs.getInt("accountId"));
-                    account.setUserId((rs.getInt("userId")));
-                    account.setAccountNumber(rs.getInt("accountNumber"));
-                    account.setBalance(rs.getDouble("balance"));
-                    account.setStatus(rs.getString("status"));
-
-                    return account;
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving user by username: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-
-    public Account updateAccountStatus(Account account) {
-
-        String sql = "UPDATE accounts SET status = ? WHERE account_id = ?";
-
-        try (Connection conn = DBConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, account.getStatus());
-            stmt.setInt(2, account.getAccountId());
-
-            int rowsUpdated = stmt.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                return account;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error updating account status: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 }
