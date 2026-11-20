@@ -104,7 +104,7 @@ public class BankingApp {
                 } else if (userInputChoice ==2) {
                     transactionController.withdraw(currentUser);
                 } else if (userInputChoice ==3) {
-                    accountController.getAccountByUserId(currentUser.getUserId());
+                    System.out.println(accountController.getAccountByUserId(currentUser.getUserId()));
                 } else if (userInputChoice ==4) {
                     changeUser();
                 } else if (userInputChoice ==5) {
